@@ -1,0 +1,10 @@
+**/node_modules
+# Laravel (backend)
+backend/src/storage/*.key
+backend/src/vendor
+backend/src/.env
+backend/src/.env.backup
+backend/src/.env.production
+backend/src/phpunit.result.cache
+backend/src/auth.json
+.vscode
