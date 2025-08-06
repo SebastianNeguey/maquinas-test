@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\ApiResponse;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +51,44 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($request->is('api/*')) {
+            // Validación
+            if ($exception instanceof ValidationException) {
+                return ApiResponse::error(
+                    'Error de validación',
+                    422,
+                    $exception->errors()
+                );
+            }
+
+            // Modelo no encontrado
+            if ($exception instanceof ModelNotFoundException) {
+                return ApiResponse::error('Recurso no encontrado', 404);
+            }
+
+            // Ruta no encontrada
+            if ($exception instanceof NotFoundHttpException) {
+                return ApiResponse::error('Ruta no encontrada', 404);
+            }
+
+            // No autenticado
+            if ($exception instanceof AuthenticationException) {
+                return ApiResponse::error('No autenticado', 401);
+            }
+
+            // Otro error general
+            return ApiResponse::error(
+                'Error del servidor',
+                500,
+                config('app.debug') ? $exception->getMessage() : null
+            );
+        }
+
+        // Si no es API, se comporta normal (web)
+        return parent::render($request, $exception);
     }
 }

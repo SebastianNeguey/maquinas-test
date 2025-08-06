@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Tarea extends Model
 {
     use HasFactory;
-
     protected $table = 'tareas';
 
     protected $fillable = [
+        'maquina_id',
         'id_produccion',
         'fecha_hora_inicio',
         'fecha_hora_termino',
@@ -20,8 +20,13 @@ class Tarea extends Model
         'estado',
     ];
 
+    public function maquina()
+    {
+        return $this->belongsTo(Maquina::class);
+    }
+
     public function produccion()
     {
-        return $this->belongsTo(Produccion::class, 'id_produccion');
+        return $this->belongsTo(Produccion::class);
     }
 }

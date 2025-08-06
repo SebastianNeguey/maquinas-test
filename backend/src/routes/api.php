@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MaquinaController;
 use App\Http\Controllers\Api\TareaController;
 use App\Http\Controllers\Api\ProduccionController;
-use App\Http\Controllers\Api\InactividadController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,4 +24,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('maquinas', MaquinaController::class);
 Route::apiResource('tareas', TareaController::class)->except(['update']);
 Route::apiResource('producciones', ProduccionController::class)->only(['index', 'show']);
-Route::apiResource('inactividades', InactividadController::class)->only(['index']);

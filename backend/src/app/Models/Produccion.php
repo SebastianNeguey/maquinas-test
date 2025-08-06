@@ -12,6 +12,7 @@ class Produccion extends Model
     protected $table = 'produccion';
 
     protected $fillable = [
+        'maquina_id',
         'tiempo_produccion',
         'tiempo_inactividad',
         'fecha_hora_inicio_inactividad',
@@ -19,7 +20,12 @@ class Produccion extends Model
     ];
 
     public function tareas()
+{
+    return $this->hasMany(Tarea::class, 'id_produccion');
+}
+
+    public function maquina()
     {
-        return $this->hasMany(Tarea::class, 'id_produccion');
+        return $this->belongsTo(Maquina::class, 'maquina_id');
     }
 }

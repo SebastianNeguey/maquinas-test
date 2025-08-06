@@ -10,6 +10,11 @@ class ProduccionController extends Controller
 {
     public function index()
     {
-        return Produccion::with('maquina')->get();
+        return Produccion::with('tareas')->get();
+    }
+
+    public function show($id)
+    {
+        return Produccion::with('maquina', 'tareas')->findOrFail($id);
     }
 }
