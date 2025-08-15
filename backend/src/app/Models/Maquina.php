@@ -17,7 +17,7 @@ class Maquina extends Model
     {
         return $this->hasMany(Tarea::class);
     }
-    public function producciones()
+    public function produccion()
     {
         return $this->hasMany(Produccion::class);
     }

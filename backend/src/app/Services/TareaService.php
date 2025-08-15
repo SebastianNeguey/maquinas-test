@@ -9,18 +9,10 @@ use App\Services\InactividadService;
 
 class TareaService
 {
-    public static function completarTarea(Tarea $tarea):void
-    {
-        $coef = $tarea->maquina->coeficiente;
-        $tarea->tiempo_produccion = round($tarea->tiempo_empleado * $coef, 2);
-        $tarea->estado = 'COMPLETADA';
-        $tarea->save();
-    }
-
     public static function evaluarProduccion(int $maquinaId)
     {
         $tareas = Tarea::where('maquina_id', $maquinaId)
-            ->where('estado', 'COMPLETADA')
+            ->where('estado', 'PENDIENTE')
             ->whereNull('id_produccion')
             ->latest('fecha_hora_termino')
             ->take(5)
@@ -37,6 +29,9 @@ class TareaService
 
             foreach ($tareas as $t) {
                 $t->id_produccion = $produccion->id;
+                $coef = $t->maquina->coeficiente;
+                $t->tiempo_produccion = round($t->tiempo_empleado * $coef, 2);
+                $t->estado = 'COMPLETADA';
                 $t->save();
             }
 

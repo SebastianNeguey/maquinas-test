@@ -24,3 +24,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('maquinas', MaquinaController::class);
 Route::apiResource('tareas', TareaController::class)->except(['update']);
 Route::apiResource('producciones', ProduccionController::class)->only(['index', 'show']);
+Route::put('/tareas/{id}/completar', [TareaController::class, 'completar']);

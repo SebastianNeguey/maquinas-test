@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignId('id_produccion')->nullable()->constrained('produccion')->onDelete('set null');
             $table->dateTime('fecha_hora_inicio');
             $table->dateTime('fecha_hora_termino');
-            $table->decimal('tiempo_empleado', 5, 2);
-            $table->decimal('tiempo_produccion', 5, 2);
+            $table->decimal('tiempo_empleado', 5, 2)->default(0);
+            $table->decimal('tiempo_produccion', 5, 2)->default(0);
             $table->enum('estado', ['PENDIENTE', 'COMPLETADA'])->default('PENDIENTE');
             $table->timestamps();
         });

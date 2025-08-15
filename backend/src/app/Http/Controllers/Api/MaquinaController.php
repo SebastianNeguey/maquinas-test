@@ -31,9 +31,15 @@ class MaquinaController extends Controller
         }
     }
 
-    public function show(Maquina $maquina)
+    public function show($id)
     {
-        return $maquina;
+        $maquina = Maquina::with(['tareas', 'producciones'])->find($id);
+
+        if (!$maquina) {
+            return response()->json(['message' => 'Máquina no encontrada'], 404);
+        }
+
+        return response()->json($maquina);
     }
 
     public function update(Request $request, Maquina $maquina)
