@@ -7,6 +7,7 @@ backend/src/.env.backup
 backend/src/.env.production
 backend/src/phpunit.result.cache
 backend/src/auth.json
+backend/src/.phpunit.result.cache
 .vscode
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produccion;
 use App\Models\Maquina;
+use App\Helpers\ApiResponse;
 
 class ProduccionController extends Controller
 {
@@ -13,6 +14,6 @@ class ProduccionController extends Controller
     {
         $produccion= Maquina::with('produccion')->findOrFail($id);
         if(!$produccion) return response()->json(['message' => 'Máquina no encontrada'], 404);
-        return response()->json($produccion->produccion);
+        return ApiResponse::success($produccion->produccion);
     }
 }

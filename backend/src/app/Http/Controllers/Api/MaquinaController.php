@@ -2,38 +2,29 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\MaquinaRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Maquina;
-use App\Helpers\ApiResponse;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\ApiResponse;
 
 class MaquinaController extends Controller
 {
-    public function index()
+    public function store(MaquinaRequest $request)
     {
-        return Maquina::all();
-    }
+        try {
+            $maquina = Maquina::create($request->validated());
 
-    public function store(Request $request)
-    {
-        try{
-        $request->validate([
-            'nombre' => 'required|string',
-            'coeficiente' => 'required|numeric|min:0.1',
-        ]);
-
-        Maquina::create($request->all());
-        return ApiResponse::success('Maquina creada exitosamente.', 'ok', 201);
+            return ApiResponse::success('Máquina creada exitosamente.', $maquina, 201);
         } catch (\Exception $e) {
-             Log::error('Error al crear la maquina: ' . $e->getMessage());
-            return ApiResponse::error('No se pudo crear la maquina', 500);
+            Log::error('Error al crear la máquina: ' . $e->getMessage());
+            return ApiResponse::error('No se pudo crear la máquina', 500);
         }
     }
 
     public function show($id)
     {
-        $maquina = Maquina::with(['tareas', 'producciones'])->find($id);
+        $maquina = Maquina::with(['tareas', 'produccion'])->find($id);
 
         if (!$maquina) {
             return response()->json(['message' => 'Máquina no encontrada'], 404);
@@ -42,16 +33,18 @@ class MaquinaController extends Controller
         return response()->json($maquina);
     }
 
-    public function update(Request $request, Maquina $maquina)
+    public function update(MaquinaRequest $request, Maquina $maquina)
     {
-        $maquina->update($request->all());
-        return $maquina;
+        $maquina->update($request->validated());
+
+        return ApiResponse::success('Máquina actualizada correctamente.', $maquina);
     }
 
     public function destroy(Maquina $maquina)
     {
         $maquina->delete();
+
         return response()->noContent();
     }
-    
 }
+
