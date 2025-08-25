@@ -10,6 +10,11 @@ use App\Helpers\ApiResponse;
 
 class MaquinaController extends Controller
 {
+    public function index()
+    {
+        $maquinas = Maquina::all();
+        return response()->json($maquinas);
+    }
     public function store(MaquinaRequest $request)
     {
         try {
