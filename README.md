@@ -59,6 +59,8 @@ Instalar dependencias: composer install
 
 - Instalación de dependencias desde la raíz del proyecto, ejecuta: npm install
 
-- .env : VITE_API_LOCAL=http://localhost:8000
+- .env :
+  Con Docker compose: VITE_API_LOCAL=http://localhost:9000
+  Sin Docker compose: VITE_API_LOCAL=http://localhost:8000
 
 - Ejecutar proyecto en modo desarrollo: npm run dev
